@@ -73,3 +73,11 @@ class RandomStuffGenerator:
         enc_id = str(self.__ENCOUNTER_ID)
         self.__ENCOUNTER_ID += 1
         return enc_id
+
+    @staticmethod
+    def get_random_id(digits=10) -> str:
+        start = 10 ** (digits - 2)
+        end = (10 ** digits) - 1
+        random_id = str(randint(start, end))
+        random_id = random_id.zfill(digits)
+        return random_id

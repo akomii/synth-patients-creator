@@ -36,6 +36,7 @@ class CDAHeaderCreator:
     def add_cda_header(self, tree: ET.ElementTree) -> ET.ElementTree:
         tree = self.__add_header_meta(tree)
         tree = self.__add_record_target(tree)
+        tree = self.__add_author(tree)
         return tree
 
     def __add_header_meta(self, tree: ET.ElementTree) -> ET.ElementTree:
@@ -76,3 +77,16 @@ class CDAHeaderCreator:
                                                                          'codeSystem': '2.16.840.1.113883.5.1'})
             patient_name = 'Max' if gender == 'M' else 'Maximiliane'
         return patient_name, gender_code
+
+    def __add_author(self, tree: ET.ElementTree) -> ET.ElementTree:
+        base_path = '/author'
+        root = tree.getroot()
+        time = tree.find('/'.join([base_path, 'time']), root.nsmap)
+        time.attrib['value'] = self.__TIMESTAMP_HANDLER.get_random_date()
+        id_author = tree.find('/'.join([base_path, 'assignedAuthor', 'id']), root.nsmap)
+        id_author.attrib['extension'] = self.__RANDOM_GENERATOR.get_random_id(digits=14)
+        id_org = tree.find('/'.join([base_path, 'assignedAuthor', 'representedOrganization', 'id']), root.nsmap)
+        id_org.attrib['extension'] = self.__RANDOM_GENERATOR.get_random_id()
+        postal_code = tree.find('/'.join([base_path, 'assignedAuthor', 'representedOrganization', 'addr', 'postalCode']), root.nsmap)
+        postal_code.text = self.__RANDOM_GENERATOR.get_random_postalcode()
+        return tree

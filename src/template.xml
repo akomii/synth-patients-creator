@@ -34,4 +34,28 @@
             </patient>
         </patientRole>
     </recordTarget>
+    <author typeCode="AUT" contextControlCode="OP">
+        <time value="${random_date}" />
+        <assignedAuthor classCode="ASSIGNED">
+            <id root="1.2.276.0.76.3.1.999" extension="${random_14_digit_id}" />
+            <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                <name>
+                    <prefix>Dr. med.</prefix>
+                    <given>Maxime</given>
+                    <family>Mustermännchen</family>
+                </name>
+            </assignedPerson>
+            <representedOrganization classCode="ORG" determinerCode="INSTANCE">
+                <id root="1.2.276.0.76.4.17" extension="${random_10_digit_id}" />
+                <name>Universitätsklinikum Musterstädtchen</name>
+                <telecom use="H" value="tel:+43.1.400004" />
+                <telecom use="MC" value="tel:+43.664.600006" />
+                <addr>
+                    <streetAddressLine>Mustersträßchen 22</streetAddressLine>
+                    <postalCode>${postal_code}</postalCode>
+                    <city>Musterstädtchen</city>
+                </addr>
+            </representedOrganization>
+        </assignedAuthor>
+    </author>
 </ClinicalDocument>
