@@ -58,4 +58,20 @@
             </representedOrganization>
         </assignedAuthor>
     </author>
+    <custodian typeCode="CST">
+        <assignedCustodian classCode="ASSIGNED">
+            <representedCustodianOrganization classCode="ORG" determinerCode="INSTANCE">
+                <id root="1.2.276.0.76.4.17" extension="${random_10_digit_id}" />
+                <name>Universitätsklinikum Musterstädtchen</name>
+                <telecom use="H" value="tel:+43.1.400004" />
+                <addr>
+                    <postalCode>${postal_code}</postalCode>
+                    <city>Musterstädtchen</city>
+                    <houseNumber>22</houseNumber>
+                    <streetName>Mustersträßchen</streetName>
+                </addr>
+            </representedCustodianOrganization>
+        </assignedCustodian>
+    </custodian>
+
 </ClinicalDocument>

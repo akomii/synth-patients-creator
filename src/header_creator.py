@@ -32,11 +32,14 @@ class CDAHeaderCreator:
     def __init__(self):
         self.__TIMESTAMP_HANDLER = TimeStampHandler()
         self.__RANDOM_GENERATOR = RandomStuffGenerator()
+        self.__ORGANIZATION_POSTAL_CODE = self.__RANDOM_GENERATOR.get_random_postalcode()
+        self.__ORGANIZATION_ID = self.__RANDOM_GENERATOR.get_random_id()
 
     def add_cda_header(self, tree: ET.ElementTree) -> ET.ElementTree:
         tree = self.__add_header_meta(tree)
         tree = self.__add_record_target(tree)
         tree = self.__add_author(tree)
+        tree = self.__add_custodian(tree)
         return tree
 
     def __add_header_meta(self, tree: ET.ElementTree) -> ET.ElementTree:
@@ -86,7 +89,25 @@ class CDAHeaderCreator:
         id_author = tree.find('/'.join([base_path, 'assignedAuthor', 'id']), root.nsmap)
         id_author.attrib['extension'] = self.__RANDOM_GENERATOR.get_random_id(digits=14)
         id_org = tree.find('/'.join([base_path, 'assignedAuthor', 'representedOrganization', 'id']), root.nsmap)
-        id_org.attrib['extension'] = self.__RANDOM_GENERATOR.get_random_id()
+        id_org.attrib['extension'] = self.__ORGANIZATION_ID
         postal_code = tree.find('/'.join([base_path, 'assignedAuthor', 'representedOrganization', 'addr', 'postalCode']), root.nsmap)
-        postal_code.text = self.__RANDOM_GENERATOR.get_random_postalcode()
+        postal_code.text = self.__ORGANIZATION_POSTAL_CODE
         return tree
+
+    def __add_custodian(self, tree: ET.ElementTree) -> ET.ElementTree:
+        base_path = '/custodian/assignedCustodian/representedCustodianOrganization'
+        root = tree.getroot()
+        id_org = tree.find('/'.join([base_path, 'id']), root.nsmap)
+        id_org.attrib['extension'] = self.__ORGANIZATION_ID
+        postal_code = tree.find('/'.join([base_path, 'addr', 'postalCode']), root.nsmap)
+        postal_code.text = self.__ORGANIZATION_POSTAL_CODE
+        return tree
+
+
+xml = XMLHandler()
+template = xml.read_xml_file('template.xml')
+
+header = CDAHeaderCreator()
+output = header.add_cda_header(template)
+
+xml.save_xml_tree(output, 'abc')
